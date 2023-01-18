@@ -85,8 +85,7 @@ sizefile='mm10.chrom.sizes'
 
 
 
-- c. For **config_file_model.R**, only change **dir_data**,**dir_functions**, **dir_out**. The {Muscle directory} is going to be the directory that you cloned the Muscle. e.g., 
-{Muscle directory} can be /Users/kwangmoonpark/Muscle. Similar to **config_file_preprocess.R** file, in case **parallel** does not exist, one can set **GNU=FALSE**. Moreover, if 
+- c. For **config_file_model.R**, only change **dir_data**,**dir_functions**, **dir_out**. Similar to **config_file_preprocess.R** file, in case **parallel** does not exist, one can set **GNU=FALSE**. Moreover, if 
 multiple servers are available for GNU parallel, one can set ssh argument such as **ssh='server01,server02,server03'**. Note that **ssh=NULL** should be used when **parallel** 
 does not exist.
 
