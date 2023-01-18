@@ -19,14 +19,15 @@ pacman::p_load(MASS,Matrix,dplyr,rTensor,reshape2,Rcpp,foreach,inline,parallel,d
 
 
 #### 2. Quick start
-This section gives instruction for running the example [Li et al. 2019 data](https://www.nature.com/articles/s41592-019-0502-z) 
+This section gives instruction for running the example [Liu et al. 2021 data](https://www.nature.com/articles/s41586-020-03182-8) 
 
 
 
-- a. First change directory to **wrapper** as below in terminal.
+- a. First change directory to **wrapper** as below in terminal. The {Muscle directory} is going to be the directory that you cloned the Muscle. e.g., 
+{Muscle directory} can be /Users/kp223/Muscle.
 
 ```
-cd /Users/kwangmoonpark/Muscle/code/wrapper/
+cd /{Muscle directory}/code/wrapper/
 ```
 
 
@@ -34,14 +35,15 @@ Before running **Muscle.sh** file, change two configuration files in **wrapper**
 hyperparameters for running Muscle.
 
 
-- b. For **config_file_preprocess.R**, only change **dir_data** and **dir_functions**. The {Muscle directory} is going to be the directory that you cloned the Muscle. e.g., 
-{Muscle directory} can be /Users/kwangmoonpark/Muscle. In case **parallel** does not exist, one can set **GNU=FALSE**. Moreover, if multiple servers are available for GNU 
+- b. For **config_file_preprocess.R**, only change **dir_data** and **dir_functions**. In case **parallel** does not exist, one can set **GNU=FALSE**. Moreover, if multiple servers are available for GNU 
 parallel, one can set ssh argument such as **ssh='server01,server02,server03'**. Note that **ssh=NULL** should be used when **parallel** does not exist.
 
 
 
 
 ```
+
+
 #number of chromosomes (23(Human) or 20(Mouse))
 chr_num=20
 
@@ -50,27 +52,33 @@ chr_num=20
 dir_data="{Muscle directory}/data/example"
 
 #directory of the functions
-dir_functions="{Muscle directory}/code/functions"
+dir_functions="{Muscle directory}/example"
 
 
 #Initial maximum rank of SVD of HiC
 exploration_rank=150
 
-#debias?
-debias=FALSE
+#Do you want debiasing? (Yes: TRUE, No: FALSE)
+debias=TRUE
 
-#Replace only zero entries with impuation
-only_zero_entries=TRUE
+#Replace only zero entries with impuation (Yes: TRUE, No: FALSE)
+only_zero_entries=FALSE
 
-#server names for gnu parallel. If exists, list them with comma without space. e.g., server01,server02
-ssh=NULL
 
 #If GNU parllel exists, type TRUE. Otherwise, FALSE. 
 GNU=TRUE
 
 
+#server names for gnu parallel. If exists, list them with comma without space. e.g., 'server01,server02'
+#ssh=NULL
+ssh='hodor01,hodor02,hodor03'
+
+
 #chromosome size file name within the data directory.
-sizefile='mm9.chrom.sizes'
+sizefile='mm10.chrom.sizes'
+#sizefile='mm9.chrom.sizes'
+#sizefile='hg19.chrom.sizes'
+
 
 ```
 
@@ -90,6 +98,9 @@ does not exist.
 
 
 
+
+
+
 #Directory of data: The directory should contain hic_df.qs and chrom.sizes file.
 dir_data="{Muscle directory}/data/example"
 
@@ -97,7 +108,7 @@ dir_data="{Muscle directory}/data/example"
 dir_functions="{Muscle directory}/code/functions"
 
 #Directory where Muscle output goes into
-dir_out="{Muscle directory}/results/Li2019"
+dir_out="{Muscle directory}/results/example"
 
 
 
@@ -105,11 +116,11 @@ dir_out="{Muscle directory}/results/Li2019"
 exploration_rank=150
 
 
-#Modality of the tensors. #Only threecasesare allowed (All,HiC,HiC+CG)
+#Modality of the tensors. #(only 3 choices available : "All", or "HiC", or "HiC+CG")
 
-#modality="All" #When all Hi-C, mCG, mCH are analyzed
+modality="All" #When all Hi-C, mCG, mCH are analyzed
 #modality="HiC" #When only Hi-C is analyzed
-modality="HiC+CG" #when only Hi-C and mCG are analyzed
+#modality="HiC+CG" #when only Hi-C and mCG are analyzed
 
 
 # If bulk TAD information exists, set it as TRUE. Otherwise, FALSE
@@ -124,12 +135,11 @@ tol=0.00001
 
 
 #maximum number of iterations for each rank 1 update
-maxiter=4
+maxiter=10
 
 #servers should be listed without any space in between. If you are not using multiple servers for GNU parallel, leave it as ssh=NULL
-#For example, ssh="hodor01,hodor02,hodor03"
-ssh=NULL
-
+#For example, ssh='hodor01,hodor02,hodor03'
+ssh='hodor01,hodor02,hodor03'
 
 ```
 
@@ -147,14 +157,14 @@ bash Muscle.sh
 
 
 
-- e. After running Muscle one should choose ranks of Hi-C data and mCG methylation matrix. Type the rank and hit enter. Muscle provides eigen value trace plots 'svd_plot.pdf' 
-and 'svd_mCG_plot.pdf'. We recommend to choose rank for each data as the elbow point of the plot. For our analysis R=15 for scHi-C and R=10 for methylation matrix. The queries 
-will be as below in the terminal.
+- e. After running Muscle one should choose ranks of scHi-C tensors, mCG, and mCH methylation matrices. Type the rank and hit enter. Muscle provides eigen value trace plots 'svd_plot.pdf', 'svd_mCG_plot.pdf' ,and 'svd_mCH_plot.pdf', consequetively. We recommend to choose rank for each data as the elbow point of the plot. For our analysis, we used R=40 for scHi-C, R=30 for mCG methylation matrix, and R=35 for mCH methylation matrix. The queries will be as below in the terminal.
 
 
 ```
-Please specify the rank value based on the singular value 'svd_plot.pdf' and hit enter (skipping will give rank=30) : 15
+Please specify the rank value based on the singular value 'svd_plot.pdf' and hit enter (skipping will give rank=30) : 40
 
-Please specify the mCG matrix rank value based on the singular value 'svd_mCG_plot.pdf' and hit enter (skipping will give rank=30) : 10
+Please specify the mCG matrix rank value based on the singular value 'svd_mCG_plot.pdf' and hit enter (skipping will give rank=30) : 30
+
+Please specify the mCH matrix rank value based on the singular value 'svd_mCH_plot.pdf' and hit enter (skipping will give rank=30) : 35
 
 ```
