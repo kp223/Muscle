@@ -19,8 +19,8 @@ pacman::p_load(MASS,Matrix,dplyr,rTensor,reshape2,Rcpp,foreach,inline,parallel,d
 
 
 #### 2. Quick start
-This section gives instruction for running the example [Liu et al. 2021 data](https://www.nature.com/articles/s41586-020-03182-8) 
-
+This section gives instruction for running the example data [Liu et al. 2021 data](https://www.nature.com/articles/s41586-020-03182-8).
+Data can be downloaded from [this link](https://drive.google.com/drive/folders/13KRB2n526JymjnNixNtWmt07KEZQv2ls?usp=sharing). Make sure that you download the data to the directory (or folder) that you cloned Muscle to. e.g., If the directory of Muscle is '/Users/kp223/Muscle', the directory for the data you downloaded from the link should be '/Users/kp223/Muscle/data'
 
 
 - a. First change directory to **wrapper** as below in terminal. The {Muscle directory} is going to be the directory that you cloned the Muscle. e.g., 
