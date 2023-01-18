@@ -2,14 +2,14 @@
 
 
 #Directory of data: The directory should contain hic_df.qs and chrom.sizes file.
-dir_data="/storage08/kwangmoon/Muscle/data/Liu2021/Reduced"
+dir_data="{Muscle directory}/data/Liu2021/Reduced"
 
 #Directory of functions
-dir_functions="/storage08/kwangmoon/Muscle/code/functions"
+dir_functions="{Muscle directory}/code/functions"
 
 #Directory where Muscle output goes into
-#dir_out="/storage08/kwangmoon/Muscle/results/Liu2021/HiConly/Reduced"
-dir_out="/storage08/kwangmoon/Muscle/results/Liu2021/All/Reduced"
+#dir_out="{Muscle directory}/results/Liu2021/HiConly/Reduced"
+dir_out="{Muscle directory}/results/Liu2021/All/Reduced"
 
 
 
@@ -17,7 +17,7 @@ dir_out="/storage08/kwangmoon/Muscle/results/Liu2021/All/Reduced"
 exploration_rank=150
 
 
-#Modality of the tensors. #Only threecasesare allowed (All,HiC,HiC+CG)
+#Modality of the tensors. #(only 3 choices available : "All", or "HiC", or "HiC+CG")
 
 modality="All" #When all Hi-C, mCG, mCH are analyzed
 #modality="HiC" #When only Hi-C is analyzed
