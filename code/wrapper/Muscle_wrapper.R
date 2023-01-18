@@ -83,7 +83,8 @@ if(modality=="HiC"){
     return(tmp)},as.list(1:chr_num))
     if(Bulk_exist==FALSE){
       dimlist=lapply(datatensor, function(x)dim(x)[1]) %>% unlist
-      LR=floor(dimlist/Rank)
+      #LR=floor(dimlist/Rank)
+       LR=floor(dimlist/10)
       saveRDS(LR,paste0(dir_out,'/ntads.rds'))
       
     }
@@ -103,7 +104,8 @@ if(modality=="All"|modality=="HiC+CG"){
     return(array(apply(tmp,3,scalemat),dim=dim(tmp)))},as.list(1:chr_num))
   if(Bulk_exist==FALSE){
     dimlist=lapply(datatensor, function(x)dim(x)[1]) %>% unlist
-    LR=floor(dimlist/Rank)
+#    LR=floor(dimlist/Rank)
+       LR=floor(dimlist/10)
     saveRDS(LR,paste0(dir_out,'/ntads.rds'))
     
   }
