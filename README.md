@@ -5,7 +5,7 @@
 
 ### 1. Preparation
 
-git clone git@github.com:keleslab/Muscle.git
+git clone https://github.com/kp223/Muscle.git
 
 -   R: [R installation](https://www.r-project.org)  (>=4.2.1)
 -   parallel (Not required, but highly recommended)
