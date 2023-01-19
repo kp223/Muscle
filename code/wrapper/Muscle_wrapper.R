@@ -32,8 +32,8 @@ if(Bulk_exist==TRUE){
   
   LR=c()
   for (i in c(1:22, "X")) {
-    #revisit
-    bulk_tad=read.table(paste0('/afs/cs.wisc.edu/p/keles/schic/volumeC/Kwangmoon/data/kim2020/insulation/bulk/Bulk2_chr',i,'.bedpe'))
+    
+    #bulk_tad=
     LR=c(LR,dim(bulk_tad)[1])}
   saveRDS(LR,paste0(dir_out,'/ntads.rds'))
   
