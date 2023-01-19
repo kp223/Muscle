@@ -20,7 +20,7 @@ pacman::p_load(MASS,Matrix,dplyr,rTensor,reshape2,Rcpp,foreach,inline,parallel,d
 ```
 
 
-### 2. Quick start
+### 2. Code description
 This section gives instruction for running the example data [Liu et al. 2021 data](https://www.nature.com/articles/s41586-020-03182-8).
 Data can be downloaded from [this link](https://drive.google.com/drive/folders/18wmHF99eRvq2vZbjPZLD8pW1e8VFwX1o?usp=sharing). Make sure that you download the data to the directory (or folder) that you cloned Muscle to. e.g., If the directory of Muscle is '/Users/kp223/Muscle', the directory for the data you downloaded from the link should be '/Users/kp223/Muscle/data'
 
@@ -187,8 +187,7 @@ head(hic_df)
 
 ![hic_df_head](/figures/hic_df_head.jpg)
 
-**hic_df.qs** file is a huge long form table that contains the scHi-C data throughout all cells and chromosomes. Note that the file should have column names 'chrom', 'binA', 'binB', 'cell', 'count' as above. Also note that 'chrom' column contains chromosome information, each entry of 'binA' column is one genomic locus that has physical contact with the other locus 'binB', 'cell' column represents the cell information, and 'count' represents the physical contact level between 'binA' and 'binB'.
-
+**hic_df.qs** file is a huge long form table that contains the scHi-C data throughout all cells and chromosomes. Note that the file should have column names 'chrom', 'binA', 'binB', 'cell', 'count' as above. Also note that 'chrom' column contains chromosome information, each entry of 'binA' column is one genomic locus that has physical contact with the other locus 'binB', 'cell' column represents the cell information, and 'count' represents the physical contact level between 'binA' and 'binB'. The **hic_df.qs** file will be eventually transformed into tensors through Muscle processing algorithm.
 
 
 
@@ -211,5 +210,57 @@ head(data_methyl_CH)
 
 
 **data_methyl_CH.qs** is a mCH methylation matrix which is of size 'across all chromosome loci $\times$ cells'. Hence, each $(i,j)$ entry of the matrix denotes mCH DNA methylation level at locus $i$ and cell $j$.
+
+
+
+
+### 4. Result visualization
+
+
+Load required packages for UMAP plotting of Muscle result. Note that **cell_tyle** contains cell type information for visualization.
+
+```
+library("RColorBrewer")
+library(umap)
+library(dplyr)
+library(ggplot2)
+library(qs)
+options(scipen = 4)
+cell_type=readRDS('{Muscle directory}/figures/cell_type.rds')
+```
+
+
+
+
+```
+colourCount = length(unique(cell_type[,2]))
+getPalette = colorRampPalette(brewer.pal(12, "Paired"))
+color_sch=getPalette(colourCount)
+color_sch[5]="black"
+color_sch[4]='red'
+
+
+dir_out=''{Muscle directory}/results/example/'
+
+Muscle_result=readRDS(paste0(dir_out,'HiC_result_final__rank35.rds'))
+
+embeddings=(Muscle_result[[1]]$C)
+rownames(embeddings)=cell_type[,1]
+ 
+set.seed(1)
+tmp= umap(embeddings)$layout
+tmp = data.frame(tmp)
+colnames(tmp) = c("X1", "X2")
+Muscle_all<-ggplot(tmp, aes(x = X1, y = X2))+ labs(color = "Cell Type")  + ylab("UMAP 2") +
+        xlab("UMAP 1") + theme_bw(base_size = 15)+
+scale_color_manual(values=color_sch) + 
+guides(colour = guide_legend(override.aes = list(size = 3)))+ geom_point(aes(color = cell_type[,2]),size=0.1)+
+ggtitle("UMAP Cell loading (Muscle, All data)")
+print(Muscle_all)
+
+```
+
+![Muscle_UMAP_example](/figures/Muscle_UMAP_example.jpg)
+
 
 
