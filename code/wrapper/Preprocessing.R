@@ -34,7 +34,7 @@ setwd(dir_data)
 
 saveRDS(chr_num,paste0(dir_data,'/chr_num.rds'))
 
-pacman::p_load(RSpectra,qs,reshape2,tidyverse,rTensor,Matrix,data.table,gtools)
+pacman::p_load(RSpectra,qs,reshape2,dplyr,rTensor,Matrix,data.table,gtools)
 options(scipen = 4)
 
 
