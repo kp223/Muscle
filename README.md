@@ -177,28 +177,39 @@ Please specify the mCH matrix rank value based on the singular value 'svd_mCH_pl
 
 This section gives a brief overview of the example data. The data is in the directory **/{Muscle directory}/data/example**.
 
+
+
+
 ```
+hic_df<-qs::qread('hic_df.qs')
 head(hic_df)
 ```
 
 ![hic_df_head](/figures/hic_df_head.jpg)
 
+**hic_df.qs** file is a huge long form table that contains the scHi-C data throughout all cells and chromosomes. Note that the file should have column names 'chrom', 'binA', 'binB', 'cell', 'count' as above. Also note that 'chrom' column contains chromosome information, each entry of 'binA' column is one genomic locus that has physical contact with the other locus 'binB', 'cell' column represents the cell information, and 'count' represents the physical contact level between 'binA' and 'binB'.
 
 
 
 
 ```
+data_methyl_CG<-qs::qread('data_methyl_CG.qs')
 head(data_methyl_CG)
 ```
 
 ![hic_df_head](/figures/data_methyl_CG_head.jpg)
 
-
+**data_methyl_CG.qs** is a mCG methylation matrix which is of size 'across all chromosome loci $\times$ cells'. Hence, each $(i,j)$ entry of the matrix denotes mCG DNA methylation level at locus $i$ and cell $j$.
 
 
 ```
+data_methyl_CH<-qs::qread('data_methyl_CH.qs')
 head(data_methyl_CH)
 ```
 
 ![hic_df_head](/figures/data_methyl_CH_head.jpg)
+
+
+**data_methyl_CH.qs** is a mCH methylation matrix which is of size 'across all chromosome loci $\times$ cells'. Hence, each $(i,j)$ entry of the matrix denotes mCH DNA methylation level at locus $i$ and cell $j$.
+
 
