@@ -217,7 +217,7 @@ head(data_methyl_CH)
 ### 4. Result visualization
 
 
-Load required packages for UMAP plotting of Muscle result. Note that **cell_tyle** contains cell type information for visualization.
+Load required packages for UMAP plotting of Muscle result. Note that **cell_type** contains cell type information for visualization.
 
 ```
 library("RColorBrewer")
@@ -232,6 +232,10 @@ cell_type=readRDS('{Muscle directory}/figures/cell_type.rds')
 
 
 
+The R codes below obtains two UMAP coordinates of the cell loading vectors, which is contained in the Muscle result object **Muscle_result**. 
+
+Notice that the object **Muscle_result** contains parameter estimates for all chromosomes: loci loadings (A,B) and cell loading (C). Since the cell loading is the same for all chromosomes and data moadalities, we can simply use the first chromosome's cell loading (C) as the embedding object.
+
 ```
 colourCount = length(unique(cell_type[,2]))
 getPalette = colorRampPalette(brewer.pal(12, "Paired"))
@@ -240,7 +244,7 @@ color_sch[5]="black"
 color_sch[4]='red'
 
 
-dir_out=''{Muscle directory}/results/example/'
+dir_out='{Muscle directory}/results/example/'
 
 Muscle_result=readRDS(paste0(dir_out,'HiC_result_final__rank35.rds'))
 
