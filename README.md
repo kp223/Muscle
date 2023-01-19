@@ -173,7 +173,7 @@ Please specify the mCH matrix rank value based on the singular value 'svd_mCH_pl
 
 
 
-#### 2. Data description
+### 3. Data description
 
 This section gives a brief overview of the example data. The data is in the directory **/{Muscle directory}/data/example**.
 
