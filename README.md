@@ -20,7 +20,7 @@ pacman::p_load(MASS,Matrix,dplyr,rTensor,reshape2,Rcpp,foreach,inline,parallel,d
 ```
 
 
-#### 2. Quick start
+### 2. Quick start
 This section gives instruction for running the example data [Liu et al. 2021 data](https://www.nature.com/articles/s41586-020-03182-8).
 Data can be downloaded from [this link](https://drive.google.com/drive/folders/18wmHF99eRvq2vZbjPZLD8pW1e8VFwX1o?usp=sharing). Make sure that you download the data to the directory (or folder) that you cloned Muscle to. e.g., If the directory of Muscle is '/Users/kp223/Muscle', the directory for the data you downloaded from the link should be '/Users/kp223/Muscle/data'
 
