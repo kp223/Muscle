@@ -5,7 +5,7 @@ chr_num=20
 
 
 #directory of the data
-dir_data="{Muscle directory}/data/Liu2021/Reduced"
+dir_data="{Muscle directory}/data/example"
 
 #directory of the functions
 dir_functions="{Muscle directory}/code/functions"

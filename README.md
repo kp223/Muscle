@@ -54,7 +54,7 @@ chr_num=20
 dir_data="{Muscle directory}/data/example"
 
 #directory of the functions
-dir_functions="{Muscle directory}/example"
+dir_functions="{Muscle directory}/code/functions"
 
 
 #Initial maximum rank of SVD of HiC
