@@ -5,12 +5,14 @@
 
 ### 1. Preparation
 
+#### 1. Repository clone
+
 git clone https://github.com/kp223/Muscle.git
 
 -   R: [R installation](https://www.r-project.org)  (>=4.2.1)
 -   parallel (Not required, but highly recommended)
 
-#### 1. Required R packages
+#### 2. Install/load required R packages
 
 ```
 install.packages('pacman')
@@ -167,3 +169,36 @@ Please specify the mCG matrix rank value based on the singular value 'svd_mCG_pl
 Please specify the mCH matrix rank value based on the singular value 'svd_mCH_plot.pdf' and hit enter (skipping will give rank=30) : 35
 
 ```
+
+
+
+
+#### 2. Data description
+
+This section gives a brief overview of the example data. The data is in the directory **/{Muscle directory}/data/example**.
+
+```
+head(hic_df)
+```
+
+![hic_df_head](/figures/hic_df_head.jpg)
+
+
+
+
+
+```
+head(data_methyl_CG)
+```
+
+![hic_df_head](/figures/data_methyl_CG_head.jpg)
+
+
+
+
+```
+head(data_methyl_CH)
+```
+
+![hic_df_head](/figures/data_methyl_CH_head.jpg)
+
