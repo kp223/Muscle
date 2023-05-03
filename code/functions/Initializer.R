@@ -21,13 +21,12 @@ suppressMessages(suppressWarnings(library(qs)))
 #invisible(capture.output(sourceCpp("./multiply.cpp"), type = "message"))
 err<-tryCatch(invisible(capture.output(sourceCpp(paste0(dir_functions,'/multiply.cpp')), type = "message")),
          error=function(e){return(1)})
-if(err==1){
+if(length(err)==1){
   
   inverse=function(x){return(chol2inv(chol(x)))}
   multiply=function(A,B){return(crossprod(t(A),B))}
   
 }
-
 
 R=1
 print(chr)
