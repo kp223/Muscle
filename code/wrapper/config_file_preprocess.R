@@ -1,9 +1,10 @@
+
 #number of chromosomes (23(Human) or 20(Mouse))
 chr_num=20
 
 
 #directory of the data
-dir_data="{Muscle directory}/data/Li2019"
+dir_data="{Muscle directory}/data/Liu2021"
 
 #directory of the functions
 dir_functions="{Muscle directory}/code/functions"
@@ -13,7 +14,7 @@ dir_functions="{Muscle directory}/code/functions"
 exploration_rank=150
 
 #Do you want debiasing? (Yes: TRUE, No: FALSE)
-debias=FALSE
+debias=TRUE
 
 #Replace only zero entries with impuation (Yes: TRUE, No: FALSE)
 only_zero_entries=FALSE
@@ -32,7 +33,6 @@ ssh=NULL
 
 
 #chromosome size file name within the data directory.
-sizefile='mm9.chrom.sizes'
-#sizefile='mm10.chrom.sizes'
+#sizefile='mm9.chrom.sizes'
+sizefile='mm10.chrom.sizes'
 #sizefile='hg19.chrom.sizes'
-
