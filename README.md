@@ -16,7 +16,7 @@ git clone https://github.com/kp223/Muscle.git
 
 ```
 install.packages('pacman')
-pacman::p_load(MASS,Matrix,dplyr,rTensor,reshape2,Rcpp,foreach,inline,parallel,doParallel,RSpectra,qs,gtools)
+pacman::p_load(MASS,Matrix,dplyr,rTensor,reshape2,Rcpp,RcppArmadillo,foreach,inline,parallel,doParallel,RSpectra,qs,gtools)
 ```
 
 
