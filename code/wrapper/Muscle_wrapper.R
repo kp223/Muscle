@@ -175,7 +175,7 @@ Muscle=function(data,R,tol=0.001,maxiter=5,dir_out,dir_functions,chr_num=20,moda
     print(paste0("Module ",k," start"))
     
     #rank 1 update
-    tmp=rankone_Muscle(data=obj,k,LR=LR,tol=tol,maxiter=maxiter,dir_out=dir_out,dir_functions=dir_functions,chr_num,modality,ssh)
+    tmp=rankone_Muscle(data=obj,k,LR=LR,tol=tol,maxiter=maxiter,dir_out=dir_out,dir_functions=dir_functions,chr_num,modality,ssh,GNU)
     
     if(k==1){btd_res=tmp$btd_res;
     if(modality=="All"|modality=="HiC+CG"){
