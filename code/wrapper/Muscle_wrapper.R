@@ -4,8 +4,7 @@ source("config_file_model.R")
 ##########################################################
 
 
-
-pacman::p_load(RColorBrewer,MASS,Matrix,dplyr,cluster,rTensor,reshape2,Rcpp,foreach,inline,parallel,doParallel,RSpectra,qs)
+pacman::p_load(RColorBrewer,MASS,Matrix,dplyr,cluster,rTensor,reshape2,Rcpp,RcppArmadillo,foreach,inline,parallel,doParallel,RSpectra,qs)
 pacman::p_load(Rcpp,RSpectra,qs,RColorBrewer)
 
 
