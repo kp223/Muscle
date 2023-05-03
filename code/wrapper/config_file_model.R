@@ -2,14 +2,14 @@
 
 
 #Directory of data: The directory should contain hic_df.qs and chrom.sizes file.
-dir_data="{Muscle directory}/data/example"
+dir_data="{Muscle directory}/data/Liu2021"
 
 #Directory of functions
 dir_functions="{Muscle directory}/code/functions"
 
 #Directory where Muscle output goes into
 
-dir_out="{Muscle directory}/results/example"
+dir_out="{Muscle directory}/results/Liu2021"
 
 
 
