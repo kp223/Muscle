@@ -38,7 +38,7 @@ install.packages('pacman')
 pacman::p_load(MASS,Matrix,dplyr,rTensor,reshape2,Rcpp,RcppArmadillo,foreach,inline,parallel,doParallel,RSpectra,qs,gtools)
 ```
 
-Details about implementing codes can be found in the [Wiki page](https://www.r-project.org](https://github.com/kp223/Muscle/wiki) of this github.
+Details about implementing codes can be found in the [Wiki page](https://github.com/kp223/Muscle/wiki) of this github.
 
 In case you are already done with installing Muscle, you can direclty move onto section 2 of each of the Wiki pages.
 
