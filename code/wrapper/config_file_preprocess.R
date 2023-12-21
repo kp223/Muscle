@@ -16,8 +16,8 @@ exploration_rank=150
 #( 0 (default) : it means to choose rank based on the screeplot of SVD, e.g., Rank_HiC=0 means that the rank for Hi-C data is chosen based on SVD of matricized Hi-C.)
 #( R : it means to set the rank as R, e.g., Rank_HiC=30 means that the rank for Hi-C data is 30. R is nonzero in this case.)
 
-Rank_HiC=0
-Rank_mCG=0
+Rank_HiC=15
+Rank_mCG=10
 Rank_mCH=0
 
 
