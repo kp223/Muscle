@@ -4,9 +4,11 @@ source("config_file_model.R")
 ##########################################################
 
 
-pacman::p_load(RColorBrewer,MASS,Matrix,dplyr,cluster,rTensor,reshape2,Rcpp,RcppArmadillo,foreach,inline,parallel,doParallel,RSpectra,qs)
+pacman::p_load(RColorBrewer,MASS,Matrix,dplyr,cluster,rTensor,purrr,furrr,reshape2,Rcpp,RcppArmadillo,foreach,inline,parallel,doParallel,RSpectra,qs)
 pacman::p_load(Rcpp,RSpectra,qs,RColorBrewer)
+options(future.globals.maxSize= Inf) 
 
+future::plan(multicore, workers =5)   
 
 
 
@@ -36,13 +38,13 @@ source(paste0(dir_functions,'/Muscle_functions.R'))
 
 if(Bulk_exist==TRUE){
   
-  LR=c()
-  for (i in c(1:22, "X")) {
+#  LR=c()
+#  for (i in c(1:22, "X")) {
     
     #bulk_tad=
-    LR=c(LR,dim(bulk_tad)[1])}
-  saveRDS(LR,paste0(dir_out,'/ntads.rds'))
-  
+#    LR=c(LR,dim(bulk_tad)[1])}
+#  saveRDS(LR,paste0(dir_out,'/ntads.rds'))
+LR=readRDS(paste0(dir_out,'/ntads.rds'))  
   
 }
 
@@ -53,11 +55,11 @@ if(Bulk_exist==TRUE){
 print("Reading in data...")
 
 if(modality=="HiC"){
-    datatensor=mapply(function(x){
+    datatensor=furrr::future_map(as.list(1:chr_num),function(x){
     tmp=log(qs::qread(paste0(dir_data,"/data_HiC_chr",x,'.qs'))+0.0001)
-    return(tmp)},as.list(1:chr_num))
+    return(tmp)})
     if(Bulk_exist==FALSE){
-      dimlist=lapply(datatensor, function(x)dim(x)[1]) %>% unlist
+      dimlist=furrr::future_map(datatensor, function(x)dim(x)[1]) %>% unlist
       #LR=floor(dimlist/Rank)
        LR=floor(dimlist/10)
       saveRDS(LR,paste0(dir_out,'/ntads.rds'))
@@ -69,14 +71,14 @@ if(modality=="HiC"){
 
 if(modality=="All"|modality=="HiC+CG"){
   
-  datatensor=mapply(function(x){
+  datatensor=furrr::future_map(as.list(1:chr_num),function(x){
     tmp=qs::qread(paste0(dir_data,"/data_HiC_chr",x,'.qs'));
     
     nonzeroind=Reduce("union",apply(tmp,3,function(x)which(rowMeans(x!=0)!=0)))
     tmp=tmp[nonzeroind,nonzeroind,]
     
     tmp=log(tmp+0.0001)
-    return(array(apply(tmp,3,scalemat),dim=dim(tmp)))},as.list(1:chr_num))
+    return(array(apply(tmp,3,scalemat),dim=dim(tmp)))})
   if(Bulk_exist==FALSE){
     dimlist=lapply(datatensor, function(x)dim(x)[1]) %>% unlist
        LR=floor(dimlist/10)
@@ -91,7 +93,7 @@ if(modality=="All"|modality=="HiC+CG"){
   tmp=naomit_matrix(tmp)
   datatensor[['CG']]=apply(tmp,2,scalemat)
   
-  
+if(Rank_mCG==0){  
   svd_res=RSpectra::svds(datatensor[['CG']],k = exploration_rank)
   nn_sv=svd_res$d[svd_res$d>0]
   (nn_sv ) %>% log %>% plot
@@ -108,13 +110,15 @@ if(modality=="All"|modality=="HiC+CG"){
   
   
   
-  
-  
+
   cat("Please specify the mCG matrix rank value based on the singular value 'svd_mCG_plot.pdf' and hit enter (skipping will give rank=30) : ")
   Rank_mCG <- as.numeric(readLines(con="stdin", 1))
-  cat(Rank_mCG, "\n")
+  cat(Rank_mCG, "\n")        
+  if(is.na(Rank_mCG)){Rank_mCG=30}                   
+}
   
-  
+
+
   
   
   
@@ -124,6 +128,7 @@ if(modality=="All"){
   tmp=naomit_matrix(tmp)
   datatensor[['CH']]=apply(tmp,2,scalemat)
   
+if(Rank_mCH==0){  
   svd_res=RSpectra::svds(datatensor[['CH']],k = exploration_rank)
   nn_sv=svd_res$d[svd_res$d>0]
   (nn_sv ) %>% log %>% plot
@@ -144,6 +149,12 @@ if(modality=="All"){
   cat("Please specify the mCH matrix rank value based on the singular value 'svd_mCH_plot.pdf' and hit enter (skipping will give rank=30) : ")
   Rank_mCH  <- as.numeric(readLines(con="stdin", 1))
   cat(Rank_mCH, "\n")
+
+  if(is.na(Rank_mCH)){Rank_mCH=30}
+   } 
+    
+    
+    
   Rank=ceiling(mean(c(Rank,Rank_mCG,Rank_mCH)))
   
   
@@ -166,9 +177,9 @@ Muscle=function(data,R,tol=0.001,maxiter=5,dir_out,dir_functions,chr_num=20,moda
     
     if(k==1){
       
-      if(modality=="All"){obj=data;mapply(function(x,y){qs::qsave(x,paste0(outname,y,'_obj.qs'))},obj,as.list(c(1:chr_num,'CG','CH')))}
-      if(modality=="HiC+CG"){obj=data;mapply(function(x,y){qs::qsave(x,paste0(outname,y,'_obj.qs'))},obj,as.list(c(1:chr_num,'CG')))}
-      if(modality=="HiC"){obj=data;mapply(function(x,y){qs::qsave(x,paste0(outname,y,'_obj.qs'))},obj,as.list(c(1:chr_num)))}
+      if(modality=="All"){obj=data;furrr::future_pmap(list(obj,as.list(c(1:chr_num,'CG','CH'))),function(x,y){qs::qsave(x,paste0(outname,y,'_obj.qs'))})}
+      if(modality=="HiC+CG"){obj=data;furrr::future_pmap(list(obj,as.list(c(1:chr_num,'CG'))),function(x,y){qs::qsave(x,paste0(outname,y,'_obj.qs'))})}
+      if(modality=="HiC"){obj=data;furrr::future_pmap(list(obj,as.list(c(1:chr_num))),function(x,y){qs::qsave(x,paste0(outname,y,'_obj.qs'))})}
   
       rm(data)
       }
@@ -204,9 +215,9 @@ Muscle=function(data,R,tol=0.001,maxiter=5,dir_out,dir_functions,chr_num=20,moda
     }
     
     
-    if(modality=="All"){obj=mapply(function(x,y,z){tmp=x-y;qs::qsave(tmp,paste0(outname,z,'_obj.qs'));return(tmp)},obj,tmp$Theta,as.list(c(1:chr_num,'CG','CH')))}
-    if(modality=="HiC+CG"){obj=mapply(function(x,y,z){tmp=x-y;qs::qsave(tmp,paste0(outname,z,'_obj.qs'));return(tmp)},obj,tmp$Theta,as.list(c(1:chr_num,'CG')))}
-    if(modality=="HiC"){obj=mapply(function(x,y,z){tmp=x-y;qs::qsave(tmp,paste0(outname,z,'_obj.qs'));return(tmp)},obj,tmp$Theta,as.list(c(1:chr_num)))}
+    if(modality=="All"){obj=furrr::future_pmap(list(obj,tmp$Theta,as.list(c(1:chr_num,'CG','CH'))),function(x,y,z){tmp=x-y;qs::qsave(tmp,paste0(outname,z,'_obj.qs'));return(tmp)})}
+    if(modality=="HiC+CG"){obj=furrr::future_pmap(list(obj,tmp$Theta,as.list(c(1:chr_num,'CG'))),function(x,y,z){tmp=x-y;qs::qsave(tmp,paste0(outname,z,'_obj.qs'));return(tmp)})}
+    if(modality=="HiC"){obj=furrr::future_pmap(list(obj,tmp$Theta,as.list(c(1:chr_num))),function(x,y,z){tmp=x-y;qs::qsave(tmp,paste0(outname,z,'_obj.qs'));return(tmp)})}
     rm(tmp)
     
     
@@ -234,9 +245,3 @@ Muscle=function(data,R,tol=0.001,maxiter=5,dir_out,dir_functions,chr_num=20,moda
 set.seed(1)
 
 Muscle(datatensor,R=Rank,tol=tol,maxiter=maxiter,dir_out=dir_out,dir_functions = dir_functions,chr_num=chr_num,modality = modality,ssh)
-
-
-
-
-
-
